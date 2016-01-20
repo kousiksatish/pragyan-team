@@ -40,7 +40,8 @@ class RegisterController extends Controller
     public function dashboard()
     {
     	$rollno =  Session::get('rollno');
-    	return view('dashboard', array("rollno"=>$rollno));
+    	$teams = Register::where('rollno', $rollno)->lists('team');
+    	return view('dashboard', array("rollno"=>$rollno, "teams" => $teams));
 
     }
 
@@ -77,12 +78,12 @@ class RegisterController extends Controller
         }
         $destinationPath = base_path() . '/public/images/'; // upload path
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-        $fileName = str_replace(' ', '_', $reg->name) . '_' . $reg->team.$extension; // renameing image
+        $fileName = str_replace(' ', '_', $reg->rollno) . '_' . $reg->team.'.'.$extension; // renameing image
         $request->file('image')->move($destinationPath, $fileName); 
         $reg->image = 'images/'.$fileName;
 
         $reg->save();
 
-        return view('dashboard', array("message" => "Successfully registered for $reg->team"));
+        return Redirect::to(action('RegisterController@dashboard'))->with('message', "You have successfully registered for $reg->team");
     }
 }

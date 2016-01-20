@@ -5,11 +5,17 @@
 @stop
 
 @section('heading-content')
-	@if(isset($message))
-	{{$message}}
+	@if(Session::has('message'))
+	{{Session::get('message')}}
 	@endif
 @stop
 
 @section('content')
-
+<div class="row">
+Teams you have registered for are
+@foreach($teams as $team)
+	<li>{{$team}}</li>
+@endforeach
+<li><a href={{action('RegisterController@register')}}>Click here to register for new team</a></li>
+</div>
 @stop
