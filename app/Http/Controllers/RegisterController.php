@@ -70,7 +70,7 @@ class RegisterController extends Controller
 		$image = $request->image;
 
 		$rules = array(
-                'image'=> 'required|image|max:200',
+                'image'=> 'required|image',
             );
 
         $validator = Validator::make($request->all(), $rules);
