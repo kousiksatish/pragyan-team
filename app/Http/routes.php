@@ -11,10 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'RegisterController@index');
+Route::post('/', 'RegisterController@auth');
+Route::group(['middleware' => 'userauth'], function () {
+	Route::get('/dashboard', 'RegisterController@dashboard');
+	Route::get('/register', 'RegisterController@register');
+	Route::post('/register', 'RegisterController@register_back');
 });
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -25,7 +28,3 @@ Route::get('/', function () {
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
-Route::group(['middleware' => ['web']], function () {
-    //
-});
