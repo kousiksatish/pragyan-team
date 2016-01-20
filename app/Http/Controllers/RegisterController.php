@@ -57,8 +57,8 @@ class RegisterController extends Controller
 		$reg->rollno = Session::get('rollno');
 		$reg->phoneno = $request->phoneno;
 		$reg->team = $request->team;
-		$teams = Register::where('rollno', $rollno)->lists('team');
-		if(in_array($teams, $team))
+		$teams = Register::where('rollno', $reg->rollno)->lists('team');
+		if(in_array($reg->teams, array($teams)))
 			return view('register', array('message'=>"You have already registered for the team $reg->team"));
 		$reg->dept = $request->dept;
 		$reg->year = $request->year;
@@ -79,6 +79,9 @@ class RegisterController extends Controller
         {
             return view('register', array('message'=>'File uploaded not a <200kb sized image'));
         }
+        list($width, $height, $type, $attr) = getimagesize($request->file('image')->getPathName());
+        if($width!=$height)
+            return view('register', array('message'=>"Please upload a image with height-width ratio 1:1"));
         $destinationPath = base_path() . '/public/images/'; // upload path
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         $fileName = str_replace(' ', '_', $reg->rollno) . '_' . $reg->team.'.'.$extension; // renameing image
