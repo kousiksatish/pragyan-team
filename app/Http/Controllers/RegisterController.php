@@ -57,6 +57,9 @@ class RegisterController extends Controller
 		$reg->rollno = Session::get('rollno');
 		$reg->phoneno = $request->phoneno;
 		$reg->team = $request->team;
+		$teams = Register::where('rollno', $rollno)->lists('team');
+		if(in_array($teams, $team))
+			return view('register', array('message'=>"You have already registered for the team $reg->team"));
 		$reg->dept = $request->dept;
 		$reg->year = $request->year;
 		$reg->bloodgrp = $request->bloodgrp;
