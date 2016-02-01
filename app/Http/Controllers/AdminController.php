@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Register as Register;
 
 class AdminController extends Controller
 {
@@ -33,11 +34,60 @@ class AdminController extends Controller
                
     }
 
-    public function dashboard()
+    public function show($team)
     {
-    	$rollno =  Session::get('rollno');
-    	$teams = Register::where('rollno', $rollno)->lists('team');
-    	return view('dashboard', array("rollno"=>$rollno, "teams" => $teams));
+        //
+        $users = Register::where('team', $team)->orderBy("updated_at", "desc")->paginate(10);
+        $users->setPath('admin/$team/all');
+        return view('showall', array("users"=>$users, "team"=>$team, "category"=>"All"));
 
     }
+    public function showNew($team)
+    {
+        //
+        $users = Register::where('approved', 0)->where('team', $team)->orderBy("updated_at", "desc")->paginate(10);
+        $users->setPath("admin/$team/new");
+        return view('showall', array("users"=>$users, "team"=>$team, "category"=>"New"));
+
+    }
+    public function showApproved($team)
+    {
+        //
+        $users = Register::where('approved', 1)->where('team', $team)->orderBy("updated_at", "desc")->paginate(10);
+        $users->setPath("admin/$team/approved");
+        return view('showall', array("users"=>$users, "team"=>$team, "category"=>"Approved"));
+
+    }
+
+    public function showRejected($team)
+    {
+        //
+        $users = Register::where('approved', 2)->where('team', $team)->orderBy("updated_at", "desc")->paginate(10);
+        $users->setPath("admin/$team/rejected");
+        return view('showall', array("users"=>$users, "team"=>$team, "category"=>"Rejected"));
+
+    }
+
+    public function approve($team, $id)
+    {
+        //
+        Register::where('id', $id)
+            ->where('team', $team)
+            ->update(array(
+                    "approved"=>1
+                ));
+        return back()->with('message', 'Successfully approved!');
+    }
+
+    public function reject($team, $id)
+    {
+        Register::where('id', $id)
+            ->where('team', $team)
+            ->update(array(
+                    "approved"=>2
+                ));
+
+        return back()->with('message', 'Successfully rejected!');
+    }
+
 }

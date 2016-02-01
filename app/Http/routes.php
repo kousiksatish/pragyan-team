@@ -14,6 +14,12 @@
 Route::get('/', 'RegisterController@index');
 Route::post('/', 'RegisterController@auth');
 Route::get('/admin', 'AdminController@index');
+Route::get('/admin/{team}/all', 'AdminController@show');
+Route::get('/admin/{team}/new', 'AdminController@showNew');
+Route::get('/admin/{team}/approved', 'AdminController@showApproved');
+Route::get('/admin/{team}/rejected', 'AdminController@showRejected');
+Route::get('/admin/{team}/approve/{id}', 'AdminController@approve');
+Route::get('/admin/{team}/reject/{id}', 'AdminController@reject');
 Route::group(['middleware' => 'userauth'], function () {
 	Route::get('/dashboard', 'RegisterController@dashboard');
 	Route::get('/register', 'RegisterController@register');
