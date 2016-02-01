@@ -4,6 +4,10 @@
 	{{$category}} - {{$team}}
 @stop
 
+@section('navright')
+<li><a href={{action('RegisterController@logout')}}>Logout</a></li>
+@stop
+
 @section('heading-content')
 @if (Session::has('message'))
 {!!Session::get('message')!!}

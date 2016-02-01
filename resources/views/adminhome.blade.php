@@ -20,7 +20,7 @@
 
         <div class="input-field col s12">
           <input name="username" type="text" class="validate" required>
-          <label for="rollno">Roll Number</label>
+          <label for="username">Username</label>
         </div>
         <div class="input-field col s12">
           <input name="password" type="password" class="validate" required>

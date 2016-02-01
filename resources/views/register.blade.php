@@ -10,6 +10,10 @@
 @endif
 @stop
 
+@section('navright')
+<li><a href={{action('RegisterController@logout')}}>Logout</a></li>
+@stop
+
 @section('content')
 	<div class="row">
     <form method="POST" action="http://localhost:8000/register" accept-charset="UTF-8" class="col s12" enctype="multipart/form-data">
