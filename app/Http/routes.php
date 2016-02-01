@@ -17,6 +17,7 @@ Route::group(['middleware' => 'userauth'], function () {
 	Route::get('/dashboard', 'RegisterController@dashboard');
 	Route::get('/register', 'RegisterController@register');
 	Route::post('/register', 'RegisterController@register_back');
+	Route::get('/logout','RegisterController@logout');
 });
 /*
 |--------------------------------------------------------------------------

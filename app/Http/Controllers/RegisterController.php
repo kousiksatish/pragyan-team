@@ -18,6 +18,11 @@ class RegisterController extends Controller
         return view('home');
     }
 
+    public function logout()
+    {
+        Session::flush();
+        return Redirect::to('/')->with('message', '<font color="green">Successfully Logged out.</font>');
+    }
     public function auth(Request $request)
     {
             $username = $request->get('username'); 
@@ -31,7 +36,7 @@ class RegisterController extends Controller
             }
             else
             {
-                return view('home', array('message'=> 'Incorrect Username or Password'));
+                return Redirect::to('/')->with('message', '<font color="red">Incorrect username or password</font>');
             }
             
                
