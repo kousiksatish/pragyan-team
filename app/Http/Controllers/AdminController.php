@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Register as Register;
+use App\Admin as Admin;
 
 class AdminController extends Controller
 {
@@ -23,13 +25,19 @@ class AdminController extends Controller
     }
     public function auth(Request $request)
     {
-            // $username = $request->get('username'); 
-            // $password=$request->get('password');
-            
-            // else
-            // {
-            //     return Redirect::to('/')->with('message', '<font color="red">Incorrect username or password</font>');
-            // }
+            $username = $request->get('username'); 
+            $password=$request->get('password');
+            $admin = Admin::where('username', $username)->where('password', $password)->first();
+            if($admin)
+            {
+                Session::set('admin_team', $admin->team);
+                return Redirect::to("/admin/$admin->team");
+            }
+
+            else
+            {
+               return Redirect::to('/admin')->with('message', '<font color="red">Incorrect username or password</font>');
+            }
             
                
     }
@@ -41,6 +49,12 @@ class AdminController extends Controller
         $users->setPath('admin/$team/all');
         return view('showall', array("users"=>$users, "team"=>$team, "category"=>"All"));
 
+    }
+
+    public function dashboard($team)
+    {
+        $team =  Session::get('admin_team');
+        return view('admindashboard', array("team"=>$team));
     }
     public function showNew($team)
     {
@@ -87,7 +101,7 @@ class AdminController extends Controller
                     "approved"=>2
                 ));
 
-        return back()->with('message', 'Successfully rejected!');
+        return back()->with('message', 'Successfully rejected0!');
     }
 
 }
