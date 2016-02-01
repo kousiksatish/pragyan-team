@@ -13,6 +13,7 @@
 
 Route::get('/', 'RegisterController@index');
 Route::post('/', 'RegisterController@auth');
+Route::get('/admin', 'AdminController@index');
 Route::group(['middleware' => 'userauth'], function () {
 	Route::get('/dashboard', 'RegisterController@dashboard');
 	Route::get('/register', 'RegisterController@register');
