@@ -23,22 +23,45 @@ class AdminController extends Controller
         Session::flush();
         return Redirect::to('/')->with('message', '<font color="green">Successfully Logged out.</font>');
     }
+
+    public function create()
+    {
+        return view('admincreate');
+    }
+    public function store(Request $request)
+    {
+        $username = $request->get('username');
+        $password = $request->get('password');
+        $retype_password = $request->get('retype_password');
+        $team = $request->get('team');
+        if($password != $retype_password)
+            return Redirect::to(action('AdminController@create'))->with('message', "<font color='red'>Password mismatch</font>");
+        $team = $request->get('team');
+
+        $admin = new Admin;
+        $admin->username = $username;
+        $admin->password = $password;
+        $admin->team = $team;
+        $admin->save();
+
+        return Redirect::to('/admin/create')->with('message', "New admin added successfully!");
+
+    }
     public function auth(Request $request)
     {
-            $username = $request->get('username'); 
-            $password=$request->get('password');
-            $admin = Admin::where('username', $username)->where('password', $password)->first();
-            if($admin)
-            {
-                Session::set('admin_team', $admin->team);
-                return Redirect::to("/admin/$admin->team");
-            }
-
-            else
-            {
-               return Redirect::to('/admin')->with('message', '<font color="red">Incorrect username or password</font>');
-            }
-            
+        $username = $request->get('username'); 
+        $password=$request->get('password');
+        if($username == env('ADMIN_USERNAME') && $password == env('ADMIN_PASSWORD'))
+        {
+            Session::put('super_admin', $username);
+            Session::put('admin_team', 'all');
+            return redirect('/admin/create');
+        }
+        else
+        {
+           return Redirect::to('/admin')->with('message', '<font color="red">Incorrect username or password</font>');
+        }
+        
                
     }
 

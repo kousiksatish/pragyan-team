@@ -23,6 +23,11 @@ Route::group(['middleware' => 'userauth'], function () {
 	Route::get('/logout','RegisterController@logout');
 });
 
+Route::group(['middleware' => 'superadminauth'], function() {
+	Route::get('/admin/create', 'AdminController@create');
+	Route::post('/admin/create', 'AdminController@store');
+});
+
 Route::group(['middleware' => 'adminauth'], function() {
 	Route::get('/admin/{team}', 'AdminController@dashboard');
 	Route::get('/admin/{team}/all', 'AdminController@show');
@@ -32,6 +37,7 @@ Route::group(['middleware' => 'adminauth'], function() {
 	Route::get('/admin/{team}/approve/{id}', 'AdminController@approve');
 	Route::get('/admin/{team}/reject/{id}', 'AdminController@reject');
 });
+
 
 /*
 |--------------------------------------------------------------------------

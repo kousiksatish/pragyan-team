@@ -16,7 +16,7 @@
 
 @section('content')
 	<div class="row">
-    <form method="POST" action="http://localhost:8000/register" accept-charset="UTF-8" class="col s12" enctype="multipart/form-data">
+    <form method="POST" action={{action('RegisterController@register_back')}} accept-charset="UTF-8" class="col s12" enctype="multipart/form-data">
       <div class="row">
         <div class="input-field col s12">
           <input name="name" type="text" class="validate" required>
