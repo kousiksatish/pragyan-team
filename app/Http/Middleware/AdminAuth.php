@@ -20,7 +20,7 @@ class AdminAuth
         {
             $team = $request->route()->parameter('team');
             $team_session = Session::get('admin_team');
-            if($team == Session::get('admin_team'))
+            if($team == Session::get('admin_team')||$team_session == 'all')
                 return $next($request);
             else
                 return Redirect::to("/admin/$team_session")->with('message', 'Trying to access wrong team!');

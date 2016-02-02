@@ -50,7 +50,7 @@ class AdminController extends Controller
     public function auth(Request $request)
     {
         $username = $request->get('username'); 
-        $password=$request->get('password');
+        $password = $request->get('password');
         if($username == env('ADMIN_USERNAME') && $password == env('ADMIN_PASSWORD'))
         {
             Session::put('super_admin', $username);
@@ -59,7 +59,14 @@ class AdminController extends Controller
         }
         else
         {
-           return Redirect::to('/admin')->with('message', '<font color="red">Incorrect username or password</font>');
+            $admin = Admin::where('username', $username)->where('password', $password)->first();
+            if($admin)
+            {
+                Session::set('admin_team', $admin->team);
+                return Redirect::to("/admin/$admin->team");
+            }
+            else
+                return Redirect::to('/admin')->with('message', '<font color="red">Incorrect username or password</font>');
         }
         
                
@@ -76,7 +83,6 @@ class AdminController extends Controller
 
     public function dashboard($team)
     {
-        $team =  Session::get('admin_team');
         return view('admindashboard', array("team"=>$team));
     }
     public function showNew($team)

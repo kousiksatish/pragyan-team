@@ -11,9 +11,6 @@
 @stop
 
 @section('content')
-@if (Session::has('message'))
-{{Session::get('message')}}
-@endif
 <div class="row center">
 	<form class="col s12" method="post">
       <div class="row">
