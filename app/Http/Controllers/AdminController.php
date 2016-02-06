@@ -76,7 +76,7 @@ class AdminController extends Controller
     {
         //
         $users = Register::where('team', $team)->orderBy("updated_at", "desc")->paginate(10);
-        $users->setPath('admin/$team/all');
+        $users->setPath('all');
         return view('showall', array("users"=>$users, "team"=>$team, "category"=>"All"));
 
     }
@@ -89,7 +89,7 @@ class AdminController extends Controller
     {
         //
         $users = Register::where('approved', 0)->where('team', $team)->orderBy("updated_at", "desc")->paginate(10);
-        $users->setPath("admin/$team/new");
+        $users->setPath("new");
         return view('showall', array("users"=>$users, "team"=>$team, "category"=>"New"));
 
     }
@@ -97,7 +97,7 @@ class AdminController extends Controller
     {
         //
         $users = Register::where('approved', 1)->where('team', $team)->orderBy("updated_at", "desc")->paginate(10);
-        $users->setPath("admin/$team/approved");
+        $users->setPath("approved");
         return view('showall', array("users"=>$users, "team"=>$team, "category"=>"Approved"));
 
     }
@@ -106,7 +106,7 @@ class AdminController extends Controller
     {
         //
         $users = Register::where('approved', 2)->where('team', $team)->orderBy("updated_at", "desc")->paginate(10);
-        $users->setPath("admin/$team/rejected");
+        $users->setPath("rejected");
         return view('showall', array("users"=>$users, "team"=>$team, "category"=>"Rejected"));
 
     }
